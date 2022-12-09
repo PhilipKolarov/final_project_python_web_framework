@@ -1,7 +1,7 @@
 from django.urls import path, include
 
-from music_services.web.views import index, ProfileCreateView, ProfileDeleteView, ProfileEditView, ServicesCreateView, \
-    ServicesEditView, ServicesDeleteView, ReviewCreateView, ReviewDeleteView, recommendation_create
+from music_services.web.views import index, ProfileCreateView, ProfileDeleteView, ProfileEditView, service_create, \
+    service_edit, service_delete, ReviewCreateView, ReviewDeleteView, recommendation_create
 
 urlpatterns = [
     path('', index, name='index'),
@@ -14,10 +14,10 @@ urlpatterns = [
     ])),
     path('services/', include([
         path('', services, name='services'),
-        path('create/', ServicesCreateView.as_view(), name='services create'),
-        path('details/<int:pk>/', services_details, name='services details'),
-        path('edit/<int:pk>/', ServicesEditView.as_view(), name='services edit'),
-        path('delete/<int:pk>/', ServicesDeleteView.as_view(), name='services delete'),
+        path('create/', service_create, name='services create'),
+        path('details/<int:pk>/', service_details, name='services details'),
+        path('edit/<int:pk>/', service_edit, name='services edit'),
+        path('delete/<int:pk>/', service_delete, name='services delete'),
     ])),
     path('review/', include([
         path('create/', ReviewCreateView.as_view(), name='review create'),
