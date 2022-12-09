@@ -4,9 +4,22 @@ from django.db import models
 from django.urls import reverse
 
 
+def includes_number(string):
+    return any(ch.isdigit() for ch in string)
+
+
 def username_length_validator(username):
-    if len(username) < 4:
-        raise ValidationError("The username must be at least 4 characters long")
+    if len(username) < 6:
+        raise ValidationError("The username must be at least 6 characters long")
+
+
+def password_validator(password):
+    if len(password) < 6:
+        raise ValidationError("The password must be at least 6 characters long.")
+    if not includes_number(password):
+        raise ValidationError("The password must include at least one number.")
+    if password.isdigit():
+        raise ValidationError("The password must include at least one letter.")
 
 
 class Profile(models.Model):
@@ -31,6 +44,9 @@ class Profile(models.Model):
 
     password = models.CharField(
         max_length=MAX_LENGTH_PASSWORD,
+        validators=[
+            password_validator,
+        ],
         null=False,
         blank=False,
     )
@@ -56,7 +72,7 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('profile-detail', kwargs={'pk': self.pk})
 
-#TODO Attach to Profile by using 'user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
 class Service(models.Model):
     SESSION_MUSICIAN = 'Session Musician'
     AUDIO_ENGINEER = 'Audio Engineer'
@@ -74,6 +90,10 @@ class Service(models.Model):
 
     MAX_LENGTH_TYPE = 30
     MIN_VALUE_PRICE = 1
+
+    user = models.ForeignKey(
+        Profile, on_delete=models.CASCADE
+    )
 
     type = models.CharField(
         max_length=MAX_LENGTH_TYPE,
@@ -107,7 +127,7 @@ class Achievements(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     title = models.CharField(
-       max_length=50,
+        max_length=50,
         null=False,
         blank=False,
     )
@@ -134,4 +154,20 @@ class Review(models.Model):
         blank=False,
     )
 
+
+class Recommendation(models.Model):
+    MAX_LENGTH_TITLE = 100
+
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    title = models.CharField(
+        max_length=MAX_LENGTH_TITLE,
+        null=False,
+        blank=False,
+    )
+
+    description = models.TextField(
+        null=False,
+        blank=False,
+    )
 
