@@ -1,5 +1,13 @@
 from django import forms
-from music_services.web.models import Service, Recommendation
+from music_services.web.models import Service, Recommendation, Profile
+
+
+class ProfileCreateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        widgets = {
+        }
 
 
 class ServiceBaseForm(forms.ModelForm):
