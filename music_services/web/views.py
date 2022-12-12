@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 
-from music_services.web.forms import RecommendationCreateForm, ServiceCreateForm, ServiceEditForm, ServiceDeleteForm
+from music_services.web.forms import RecommendationCreateForm, ServiceCreateForm, ServiceEditForm, ServiceDeleteForm, \
+    ProfileCreateForm
 from music_services.web.models import Profile, Service, Review
 
 
@@ -28,16 +29,25 @@ def index(request):
 
 
 class ProfileCreateView(CreateView):
+    template_name = 'profile/profile-create.html'
     model = Profile
-    fields = ['username', 'email', 'password', 'first_name', 'last_name']
+    form_class = ProfileCreateForm
+
+
+class ProfileDetailsView(DetailView):
+    template_name = 'profile/profile-details.html'
+    model = Profile
+    fields = '__all__'
 
 
 class ProfileEditView(UpdateView):
+    template_name = 'profile/profile-edit.html'
     model = Profile
     fields = '__all__'
 
 
 class ProfileDeleteView(DeleteView):
+    template_name = 'profile/profile-delete.html'
     model = Profile
     success_url = reverse_lazy('success') # This is an HTML to which we will be redirected upon successful deletion
 
@@ -57,7 +67,21 @@ def service_create(request):
 
     return render(
         request,
-        'services-create.html',
+        'service/service-create.html',
+        context
+    )
+
+
+def service_details(request, pk):
+    service = Service.objects.filter(pk=pk).get()
+
+    context = {
+        'service': service,
+    }
+
+    return render(
+        request,
+        'service/service-details.html',
         context
     )
 
@@ -80,7 +104,7 @@ def service_edit(request, pk):
 
     return render(
         request,
-        'services-edit.html',
+        'service/service-edit.html',
         context
     )
 
@@ -103,7 +127,7 @@ def service_delete(request, pk):
 
     return render(
         request,
-        'services-delete.html',
+        'service/service-delete.html',
         context
     )
 
@@ -134,17 +158,25 @@ def recommendation_create(request):
 
     return render(
         request,
-        '',
+        'about/recommendation.html',
         context
     )
 
 
 def about(request):
+    return render(
+        request,
+        'about/about.html',
+    )
+
+
+def catalogue(request):
     context = {
+        'services': Service.objects.all()
     }
 
     return render(
         request,
-        'about.html',
+        'catalogue/catalogue.html',
         context
     )
