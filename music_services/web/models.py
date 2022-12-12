@@ -89,10 +89,17 @@ class Service(models.Model):
     )
 
     MAX_LENGTH_TYPE = 30
+    MAX_LENGTH_NAME = 128
     MIN_VALUE_PRICE = 1
 
     user = models.ForeignKey(
         Profile, on_delete=models.CASCADE
+    )
+
+    name = models.CharField(
+        max_length=MAX_LENGTH_NAME,
+        null=False,
+        blank=False,
     )
 
     type = models.CharField(
@@ -170,4 +177,3 @@ class Recommendation(models.Model):
         null=False,
         blank=False,
     )
-
