@@ -1,0 +1,33 @@
+{% extends base.html %}
+{% load static %}
+
+{% block content %}
+<div id="box">
+    <header>
+
+        <!-- navigation bar -->
+        <h1><a class="index-navigation" href="{% url 'index' %}"><span>H</span>OME</a></h1>
+        <nav>
+            <a href="{% url 'profile create' %}">Log In/Register</a>
+        </nav>
+    </header>
+
+    <!-- create profile form -->
+    <section id="register-page" class="content auth">
+        <form id="register" method="post" action="{% url 'profile create' %}">
+            <div class="container">
+                <h1>Not a member? Register now!</h1>
+                {{ form }}
+                <input class="btn submit" type="submit" value="Create Profile">
+                {% csrf_token %}
+            </div>
+        </form>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        &copy;SoftUni Team 2022. All rights reserved.
+    </footer>
+
+</div>
+{% endblock %}
