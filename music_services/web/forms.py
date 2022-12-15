@@ -1,0 +1,45 @@
+from django import forms
+
+from music_services.web.models import Service, Recommendation, Review
+
+
+class ServiceBaseForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = ['name', 'type', 'description', 'image_url', 'price']
+
+
+class ServiceCreateForm(ServiceBaseForm):
+    pass
+
+
+class ServiceEditForm(ServiceBaseForm):
+    pass
+
+
+class ServiceDeleteForm(ServiceBaseForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__make_hidden_fields()
+
+    def save(self, commit=True):
+        if commit:
+            self.instance.delete()
+        else:
+            return self.instance
+
+    def __make_hidden_fields(self):
+        for _, f in self.fields.items():
+            f.widget = forms.HiddenInput()
+
+
+class RecommendationCreateForm(forms.ModelForm):
+    class Meta:
+        model = Recommendation
+        fields = '__all__'
+
+
+class ReviewCreateForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('rating', 'description')
