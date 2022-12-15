@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="site_content">
+    <header>
+        <h1>Profile Info:</h1>
+    </header>
+    <body>
+        <div>
+            <div>
+                <h2>Current Details:</h2>
+                {% if not request.user.profile_picture %}
+                    <img src="{% static 'generic-profile-picture.jpg' %}"
+                         width="300"
+                         height="300"
+                         alt='profile-image'/>
+                {% else %}
+                    <img src="{{ request.user.profile_picture }}"
+                         width="300"
+                         height="300"
+                         alt='profile-image'/>
+                {% endif %}
+                {% if request.user.first_name and request.user.last_name %}
+                    <h2>{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+                {% elif request.user.first_name %}
+                    <h2>{{ request.user.first_name }}</h2>
+                {% elif profile.last_name %}
+                    <h2>{{ request.user.last_name }}</h2>
+                {% endif %}
+                <p>Username: {{ request.user.username }}</p>
+                <p>Email: {{ request.user.email }}</p>
+                <button><a href="{% url 'edit user' pk=request.user.pk %}">Edit</a></button>
+                <button><a href="{% url 'delete user' pk=request.user.pk %}">Delete</a></button>
+            </div>
+        </div>
+        <div>
+            {% if services %}
+                <button><a href="{% url 'service create' %}">Create Service</a></button>
+                <h2>Current Services:</h2>
+                {% for s in services %}
+                    <div>
+                        <div>
+                            <img src="{{ s.image_url }}"
+                                width="250"
+                                height="250"
+                                alt="{{ s.type }}">
+                        </div>
+                        <h4><a href="{% url 'service details' pk=s.pk %}">{{ s.name }}</a></h4>
+                        <h4>{{ s.price }}</h4>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4>You currently have no services. Create one via the page below:</h4>
+                <button><a href="{% url 'service create' %}">Create Service</a></button>
+            {% endif %}
+        </div>
+        <div>
+            <h2>Written reviews:</h2>
+            {% if reviews %}
+                {% for r in reviews %}
+                    <div>
+                        <h4>Reviewee:</h4>
+                        {{ r.reviewee }}
+                        <h4>Rating:</h4>
+                        {{ r.rating }}
+                        <h4>Description: </h4>
+                        {{ r.description }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You currently have no reviews.</p>
+            {% endif %}
+    </body>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="site_content">
+    <header>
+        <h1>Update Service Info:</h1>
+    </header>
+    <!-- register form -->
+    <body>
+        <section>
+        <form id="create" method="post" action="{% url 'service edit' pk=service.pk %}">
+            <div>
+                <h3>Fill in your service details below:</h3>
+                <h5>Name:</h5>
+                {{ form.name }}
+                <h5>Type:</h5>
+                {{ form.type }}
+                <h5>Description:</h5>
+                {{ form.description }}
+                <h5>Image (URL):</h5>
+                {{ form.image_url }}
+                <h5>Price:</h5>
+                {{ form.price|linebreaks }}
+                {{ form.errors }}
+                <input type="hidden" name="next" value ="{{ next }}">
+                <button type="submit">Update</button>
+                {% csrf_token %}
+            </div>
+        </form>
+    </section>
+    </body>
+</div>
+{% endblock %}

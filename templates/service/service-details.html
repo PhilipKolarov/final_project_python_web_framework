@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="site_content">
+    <header>
+        <h2><strong>{{ service.name }}</strong></h2>
+    </header>
+    <section>
+        <div class="info-section">
+            <div>
+                <img class="car-img"
+                     src="{{ service.image_url }}"
+                     width="400"
+                     height="400"
+                     alt='{{ service.type }}'/>
+                <p><strong>User: </strong>{{ service.user }}</p>
+                <p><strong>Description: </strong>{{ service.description }}</p>
+                <p><strong>Type: </strong>{{ service.type }}</p>
+                <p><strong>Price: </strong>{{ service.price|floatformat:2 }}</p>
+            </div>
+
+            <div>
+                {% if request.user.is_authenticated %}
+                    {% if service.user == request.user %}
+                        <button><a href="{% url 'service edit' pk=service.pk %}">Edit</a></button>
+                        <button><a href="{% url 'service delete' pk=service.pk %}">Delete</a></button>
+                    {% else %}
+                        <h2>Write a reviews below:</h2>
+                        <form method="post" action="{% url 'service details' pk=service.pk %}">
+                            <div>
+                                <h3>Fill in the details below:</h3>
+                                <h5>Rating:</h5>
+                                {{ form.rating }}
+                                <h5>Description:</h5>
+                                {{ form.description }}
+                                {{ form.errors }}
+                                <p></p>
+                                <input type="hidden" name="next" value ="{{ next }}">
+                                <button type="submit">Submit</button>
+                                {% csrf_token %}
+                            </div>
+                        </form>
+                    {% endif %}
+                {% endif %}
+                <h2>Reviews:</h2>
+                {% if reviews %}
+                    {% for r in reviews %}
+                        <div>
+                            <h4>Reviewee:</h4>
+                            {{ r.reviewee }}
+                            <h4>Rating:</h4>
+                            {{ r.rating }}
+                            <h4>Description: </h4>
+                            {{ r.description }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No reviews written yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
