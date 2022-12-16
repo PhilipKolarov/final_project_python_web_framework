@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="site_content">
+    <header>
+        <h1>Update Review Info:</h1>
+    </header>
+    <body>
+        <section>
+        <form id="create" method="post" action="{% url 'review edit' pk=review.pk %}">
+            <div>
+                <h5>Rating:</h5>
+                {{ form.rating }}
+                <h5>Description:</h5>
+                {{ form.comment }}
+                {{ form.errors }}
+                <input type="hidden" name="next" value ="{{ next }}">
+                <button type="submit">Update</button>
+                {% csrf_token %}
+            </div>
+        </form>
+    </section>
+    </body>
+</div>
+{% endblock %}

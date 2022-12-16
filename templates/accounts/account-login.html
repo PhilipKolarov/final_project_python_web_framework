@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="site_content">
+    <header>
+        <h1>Login now!</h1>
+    </header>
+    <!-- login form -->
+    <section>
+        <form method="post" action="{% url 'login user' %}">
+            <div class="container">
+                <h3>Fill in your details below:</h3>
+                <h5>Username:</h5>
+                {{ form.username|linebreaks }}
+                <h5>Password:</h5>
+                {{ form.password|linebreaks }}
+                <input type="hidden" name="next" value ="{{ next }}">
+                <button type="submit">Login</button>
+                {% csrf_token %}
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}
