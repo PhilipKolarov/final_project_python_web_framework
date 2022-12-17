@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="site_content">
+    <section>
+      <div>
+        <h1>Sorry, you don't have access to this page!</h1>
+        <p>Try going back a page or click <a href="{% url 'index' %}">here</a> to go to the home page</p>
+      </div>
+
+    </section>
+</div>
+{% endblock %}

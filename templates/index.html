@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="site_content">
+      <div class="sidebar">
+        {% if request.user.is_superuser or request.user.is_staff %}
+          <button><a href="{% url 'announcement create' %}">Create Announcement</a></button>
+        {% endif %}
+        {% if announcements %}
+          <h3>Announcements:</h3>
+          {% for a in announcements %}
+            <h4>{{ a.title }}</h4>
+            <h5>{{ a.date_posted }}</h5>
+            <p>{{ a.info }}<br /></p>
+              {% if request.user.is_staff or request.user.is_superuser %}
+              <button><a href="{% url 'announcement edit' pk=a.pk %}">Edit</a></button>
+              <button><a href="{% url 'announcement delete' pk=a.pk %}">Delete</a></button>
+              {% endif %}
+            <p></p>
+          {% endfor %}
+        {% else %}
+          <h3>Expect announcements soon!</h3>
+        {% endif %}
+      </div>
+      <div id="content">
+        <h1>Welcome to PK Music Services</h1>
+        <p>We are here to provide and host a number of services for and from authenticated users in the world of music. You may find everything from session musicians to audio engineers.</p>
+          <p>Feel free to browse our <a href="{% url 'catalogue' %}">services</a> here. Check out our <a href="{% url 'about' %}">about</a> section to read or seek more information, concerning our goals and objectives.</p>
+        </ul>
+      </div>
+    </div>
+{% endblock %}

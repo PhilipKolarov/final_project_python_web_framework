@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PK Music Services</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <link rel="stylesheet" type="text/css" href="{% static 'style/style.css' %}" title="style" />
+</head>
+<body>
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="{% url 'index' %}">PK <span class="logo_colour">Music Services</span></a></h1>
+          <h2>Sharing your talents with the world</h2>
+        </div>
+      </div>
+      {% if not request.user.is_authenticated %}
+      <div id="menubar">
+        <ul id="menu">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'catalogue' %}">Services</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'register user' %}">Register</a></li>
+          <li><a href="{% url 'login user' %}">Login</a></li>
+        </ul>
+      </div>
+
+      {% else %}
+      <div id="menubar">
+        <ul id="menu">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'catalogue' %}">Services</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'details user' pk=request.user.pk %}">Profile</a></li>
+          <li><a href="{% url 'logout user' %}">Logout</a></li>
+        </ul>
+      </div>
+
+      {% endif %}
+    </div>
+  </div>
+</body>
+
+<main>
+    {% block content %}
+
+    {% endblock content %}
+</main>
+<div id="footer">
+      Copyright &copy; PK Music Services
+</div>
+</html>

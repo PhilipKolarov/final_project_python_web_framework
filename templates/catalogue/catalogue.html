@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="site_content">
+      <div id="content">
+          {% if not services %}
+            <p>No services have been added yet</p>
+          {% else %}
+              {% for s in services %}
+                <section>
+                    <div>
+                        <img src="{{ s.image_url }}"
+                             width="400"
+                             height="400"
+                             alt="{{ s.type }}">
+                    </div>
+                    <h3><a href="{% url 'service details' pk=s.pk %}">{{ s.name }}</a></h3>
+                    <h3>{{ s.price }}</h3>
+                </section>
+              {% endfor %}
+
+          {% endif %}
+    </div>
+  </div>
+{% endblock content %}
